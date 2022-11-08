@@ -34,13 +34,13 @@ public class UserController {
 	public Response addUser(@RequestBody User user) {
 		return userService.register(user);
 	}
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER','ROLE_SELLER)")
 	@PutMapping
 	public Response changeUser(@RequestBody User user,Authentication authentication) {
 		return userService.changePassword(user, authentication);
 	}
 	
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER','ROLE_SELLER')")
 	@PutMapping("/authorization")
 	public Response beSeller(@RequestBody User user,Authentication authentication) {
 		return userService.beSeller(user, authentication);

@@ -23,13 +23,13 @@ public class OrderProductController {
 	@Autowired
 	OrderProductService orderProductService;
 	
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER','ROLE_SELLER')")
 	@GetMapping("/{id}")
 	public OrderProduct getProduct(@PathVariable int id) {
 		return orderProductService.getOrderProduct(id);
 	}
 	
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER','ROLE_SELLER')")
 	@GetMapping
 	public List<OrderProduct> getOrderProducts() {
 		return orderProductService.getOrderProducts();
@@ -43,21 +43,21 @@ public class OrderProductController {
 	}
 	
 	**/
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER','ROLE_SELLER')")
 	@PostMapping
 	public Response addOrderProduct(@RequestBody OrderProduct orderProduct) {
 		return orderProductService.addOrderProduct(orderProduct);
 	}
 	
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER','ROLE_SELLER')")
 	@PutMapping
 	public Response changeOrderProduct(@RequestBody OrderProduct orderProduct) {
 		return orderProductService.changeOrderProduct(orderProduct);
 	}
 	
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
-	@DeleteMapping
-	public Response deleteOrderProduct(int id) {
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER','ROLE_SELLER')")
+	@DeleteMapping("/{id}")
+	public Response deleteOrderProduct(@PathVariable int id) {
 		return orderProductService.deleteOrderProduct(id);
 	}
 }
