@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import emall.usc.beans.User;
 import emall.usc.http.Response;
-import emall.usc.jwt.JwtGeneratorImpl;
 import emall.usc.jwt.JwtGeneratorInterface;
 import emall.usc.service.UserService;
 
