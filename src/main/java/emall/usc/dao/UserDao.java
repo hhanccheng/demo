@@ -8,5 +8,5 @@ import emall.usc.beans.User;
 @Repository
 public interface UserDao extends JpaRepository<User,Integer>{
 	User findByUsername(String username);
-	
+	User findByUserNameAndPassword(String userName, String password);
 }

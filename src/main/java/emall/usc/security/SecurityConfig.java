@@ -5,12 +5,16 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import emall.usc.handler.AccessDeniedHandlerImpl;
@@ -38,6 +42,21 @@ public class SecurityConfig{
 	
 	@Autowired
 	UserDetailsService userDetailsService;
+
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		
+		authProvider.setUserDetailsService(userDetailsService);
+		authProvider.setPasswordEncoder(passwordEncoder());
+	
+		return authProvider;
+	}
+
+	@Bean
+  	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
+    	return authConfiguration.getAuthenticationManager();
+  	}
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,15 +72,17 @@ public class SecurityConfig{
 	        .passwordParameter("password")
 	        .and().logout().permitAll()
 	        .logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandlerImpl).and().rememberMe();
-        
+
+		http.authenticationProvider(authenticationProvider());
+
         return http.build();
     }
-	
+
 	@Bean
-	UrlBasedCorsConfigurationSource corsConfiguration() {
+	CorsConfigurationSource corsConfiguration() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.addAllowedOrigin("*");
-		
+		configuration.applyPermitDefaultValues();
+		configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:3000", "*"));
 		configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","HEAD","OPTION"));
 		configuration.addAllowedHeader("/*");
 		configuration.setAllowCredentials(true);
