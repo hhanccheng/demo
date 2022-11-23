@@ -79,7 +79,7 @@ public class SecurityConfig{
     }
 
 	@Bean
-	CorsConfigurationSource corsConfiguration() {
+	public CorsConfigurationSource corsConfiguration() {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(Arrays.asList("*"));
 		configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","HEAD","OPTION"));
@@ -90,6 +90,7 @@ public class SecurityConfig{
 		return source;
 	}
 	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		PasswordEncoder encoder = new BCryptPasswordEncoder(11);
