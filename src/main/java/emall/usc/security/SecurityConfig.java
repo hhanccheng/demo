@@ -82,7 +82,7 @@ public class SecurityConfig{
 	CorsConfigurationSource corsConfiguration() {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.applyPermitDefaultValues();
-		configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:3000", "*"));
+		configuration.setAllowedOrigins(Arrays.asList("*"));
 		configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","HEAD","OPTION"));
 		configuration.addAllowedHeader("/*");
 		configuration.setAllowCredentials(true);
