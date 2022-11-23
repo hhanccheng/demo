@@ -35,13 +35,17 @@ public class UserService {
 		return userDao.findAll();
 	}
 
-	public User getUserByNameAndPassword(String name, String password) throws Exception {
-		User user = userDao.findByUserNameAndPassword(name, password);
+	public User getUserBynameAndpassword(String name, String password) throws Exception {
+		User user = userDao.findByUsername(name);
 		if(user == null){
-		   throw new Exception("Invalid id and password");
+			throw new Exception("Invalid id and password");
 		}
-		return user;
-	  }
+		if(password.equals(user.getPassword())){
+			return user;
+		}else{
+			throw new Exception("Invalid password");
+		}
+	}
 	
 	public Response register(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));

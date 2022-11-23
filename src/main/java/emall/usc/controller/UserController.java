@@ -46,7 +46,7 @@ public class UserController {
 			if(user.getUsername() == null || user.getPassword() == null) {
 				throw new Exception("UserName or Password is Empty");
 			}
-			User userData = userService.getUserByNameAndPassword(user.getUsername(), user.getPassword());
+			User userData = userService.getUserBynameAndpassword(user.getUsername(), user.getPassword());
 			if(userData == null){
 				throw new Exception("UserName or Password is Invalid");
 			}
