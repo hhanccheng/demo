@@ -33,7 +33,13 @@ public class UserController {
 	public List<User> getusers(){
 		return userService.getusers();
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER','ROLE_SELLER)")
+	@GetMapping("/token")
+	public ResponseEntity<?> gettoken(Authentication authentication){
+		return userService.gettoken(authentication);
+	}
+
+
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody User user) {
 		try {

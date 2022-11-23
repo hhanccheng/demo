@@ -7,6 +7,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +18,7 @@ import emall.usc.beans.User;
 import emall.usc.beans.UserProfile;
 import emall.usc.dao.UserDao;
 import emall.usc.http.Response;
+import emall.usc.jwt.JwtGeneratorInterface;
 
 @Service
 @Transactional
@@ -25,6 +28,8 @@ public class UserService {
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
+	private JwtGeneratorInterface jwtGenerator;
 	
 	public List<User> getusers(){
 		return userDao.findAll();
@@ -66,6 +71,11 @@ public class UserService {
 			return new Response(false);
 		}
 		return new Response(true);
+	}
+	//get the token
+	public ResponseEntity<?> gettoken(Authentication authentication){
+		User u = userDao.findByUsername(authentication.getName());
+		return new ResponseEntity<>(jwtGenerator.generateToken(u), HttpStatus.OK);
 	}
 	
 	public Response beSeller(User user, Authentication authentication) {
